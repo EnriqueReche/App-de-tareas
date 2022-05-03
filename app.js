@@ -1,53 +1,47 @@
 document.getElementById('formTask').addEventListener('submit', saveTask);
 
-
-
-/* THIS FUNCTION TAKE VALUES OF TASK AND SAVE IN TASK */
-function saveTask (e) {
-
+function saveTask(e) {
   let title = document.getElementById('title').value;
   let description = document.getElementById('description').value;
+  console.log(description)
 
-
-  const task = {
+  let task = {
     title, 
     description
-  }
+  };
 
-/*   localStorage.setItem('task', JSON.stringify(task)); */
-
-  if (localStorage.getItem('tasks') === null) {
+  if(localStorage.getItem('tasks') === null) {
       let tasks = [];
       tasks.push(task);
       localStorage.setItem('tasks', JSON.stringify(tasks))
    } else {
      let tasks = JSON.parse(localStorage.getItem('tasks'));
      tasks.push(task);
-     localStorage.setItem('task', JSON.stringify(tasks));
+     localStorage.setItem('tasks', JSON.stringify(tasks));
    }
-
-   getTask()
+   
+   getTasks();
    document.getElementById('formTask').reset();
   e.preventDefault();
 };
 
 
-function deleteTask (title) {
+function deleteTask(title) {
+
   console.log(title);
   let tasks = JSON.parse(localStorage.getItem('tasks'));
-
-  for(let i = 0; i === tasks.length; i++) {
-    if (tasks[i].title == title){
-      tasks.splice(i, 1)
+  for(let i = 0; i < tasks.length; i++) {
+    if(tasks[i].title == title) {
+      tasks.splice(i, 1);
     }
   }
-  localStorage.setItem('tasks', JSON.stringify(tasks))
 
-getTask();
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+getTasks();
 }
 
-function getTask () {
-  let tasks = JSON.parse(localStorage.getItem('tasks')) ;
+function getTasks() {
+  let tasks = JSON.parse(localStorage.getItem('tasks'));
   let tasksView = document.getElementById('tasks');
   tasksView.innerHTML = '';
   for(let i = 0; i < tasks.length; i++) {
@@ -57,12 +51,12 @@ function getTask () {
     tasksView.innerHTML += `<div class="card mb-3">
       <div class ="card-body">
         <p>${title} - ${description}
-        <a href="#" class="btn btn-danger ml-5" onclick="deleteTask('${title}')">delete</a>
+        <a href="#" onclick="deleteTask('${title}')" class="btn btn-danger ml-5" >delete</a>
         </p>
       </div>
     </div>`;
-  };
-};
+  }
+}
 
-getTask();
+getTasks();
 
